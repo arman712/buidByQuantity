@@ -43,7 +43,7 @@ public class Container {
             throw new ContainerIsEmpty("the container is not initialized because there are no annotated classes");
         }
         if (container.get(className) == null) {
-            throw new NotFoundClass("there is no class named "+className+" in the container");
+            throw new NotFoundClass("there is no class named " + className + " in the container");
         }
 
         Object o = container.get(className).get(index);
@@ -54,6 +54,27 @@ public class Container {
         return o;
 
 
+    }
+
+    public <T> T getByIndex(Class<T> c, int index) throws ContainerIsEmpty, NotFoundObjectByIndex, NotFoundClass {
+
+        if (container == null) {
+            throw new ContainerIsEmpty("the container is not initialized because there are no annotated classes");
+        }
+        for (HashMap<Integer, Object> box : container.values()) {
+
+            if (box.get(1).getClass() == c) {
+
+                if (box.get(index) != null) {
+
+                    return (T) box.get(index);
+
+                } else  {
+                       throw new NotFoundObjectByIndex("there is no object under such index");
+                 }
+            }
+        }
+        throw new NotFoundClass("there is no class named " + c.getSimpleName() + " in the container");
     }
 
 
